@@ -1,719 +1,583 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GitHub README Viewer</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub README Viewer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            min-height: 100vh;
-            color: #334155;
-        }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      min-height: 100vh;
+      color: #334155;
+    }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
 
-        .config-screen {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-        }
+    .config-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
 
-        .config-card {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-            padding: 2.5rem;
-            max-width: 500px;
-            width: 100%;
-        }
+    .config-card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      padding: 2.5rem;
+      max-width: 500px;
+      width: 100%;
+    }
 
-        .config-icon {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
+    .config-icon {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+    }
 
-        .config-title {
-            text-align: center;
-            font-size: 1.75rem;
-            font-weight: 300;
-            color: #1e293b;
-            margin-bottom: 2rem;
-        }
+    .config-title {
+      text-align: center;
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: #1e293b;
+      margin-bottom: 2rem;
+    }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
 
-        label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: #475569;
-            margin-bottom: 0.5rem;
-        }
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #475569;
+      margin-bottom: 0.5rem;
+    }
 
-        input[type="text"] {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            transition: all 0.2s;
-        }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s;
+    }
 
-        input[type="text"]:focus {
-            outline: none;
-            border-color: #64748b;
-            box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
-        }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #64748b;
+      box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
+    }
 
-        .btn {
-            width: 100%;
-            padding: 0.875rem;
-            background: #1e293b;
-            color: white;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+    .btn {
+      width: 100%;
+      padding: 0.875rem;
+      background: #1e293b;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-        .btn:hover {
-            background: #334155;
-        }
+    .btn:hover {
+      background: #334155;
+    }
 
-        .btn:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
+    .btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
 
-        .btn-secondary {
-            background: transparent;
-            color: #475569;
-            padding: 0.5rem 1rem;
-            width: auto;
-            font-size: 0.875rem;
-        }
+    .btn-secondary {
+      background: transparent;
+      color: #475569;
+      padding: 0.5rem 1rem;
+      width: auto;
+      font-size: 0.875rem;
+    }
 
-        .btn-secondary:hover {
-            color: #1e293b;
-            background: #f1f5f9;
-        }
+    .btn-secondary:hover {
+      color: #1e293b;
+      background: #f1f5f9;
+    }
 
-        .repo-list {
-            margin-top: 1.5rem;
-            max-height: 400px;
-            overflow-y: auto;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-        }
+    .repo-list {
+      margin-top: 1.5rem;
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+    }
 
-        .repo-item {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
+    .repo-item {
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
 
-        .repo-item:last-child {
-            border-bottom: none;
-        }
+    .repo-item:last-child {
+      border-bottom: none;
+    }
 
-        .repo-item:hover {
-            background: #f8fafc;
-        }
+    .repo-item:hover {
+      background: #f8fafc;
+    }
 
-        .repo-item.selected {
-            background: #e0f2fe;
-            border-left: 3px solid #0284c7;
-        }
+    .repo-name {
+      font-weight: 500;
+      color: #1e293b;
+    }
 
-        .repo-name {
-            font-weight: 500;
-            color: #1e293b;
-        }
+    .repo-desc {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
 
-        .repo-desc {
-            font-size: 0.875rem;
-            color: #64748b;
-        }
+    .repo-branch {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
 
-        .repo-branch {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
+    .header {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
 
-        .header {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
 
-        .header-top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
+    .header-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
 
-        .header-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+    .header-icon {
+      font-size: 2rem;
+    }
 
-        .header-icon {
-            font-size: 2rem;
-        }
+    .header-title {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #1e293b;
+    }
 
-        .header-title {
-            font-size: 1.5rem;
-            font-weight: 300;
-            color: #1e293b;
-        }
+    .header-subtitle {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
 
-        .header-subtitle {
-            font-size: 0.875rem;
-            color: #64748b;
-        }
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
 
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: #64748b;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
+    .breadcrumb-active {
+      color: #1e293b;
+      font-weight: 500;
+    }
 
-        .breadcrumb-active {
-            color: #1e293b;
-            font-weight: 500;
-        }
+    .search-box {
+      position: relative;
+    }
 
-        .search-box {
-            position: relative;
-        }
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
+    }
 
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-        }
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+    }
 
-        .search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 1px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-        }
+    .main-content {
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      gap: 1.5rem;
+    }
 
-        .main-content {
-            display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 1.5rem;
-        }
+    @media (max-width: 1024px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
 
-        @media (max-width: 1024px) {
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-        }
+    .sidebar {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+    }
 
-        .sidebar {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            padding: 1.5rem;
-        }
+    .sidebar-title {
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: #1e293b;
+      margin-bottom: 1rem;
+    }
 
-        .sidebar-title {
-            font-size: 1.125rem;
-            font-weight: 500;
-            color: #1e293b;
-            margin-bottom: 1rem;
-        }
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-        .file-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+    .file-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      color: #1e293b;
+    }
 
-        .file-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            border: none;
-            background: transparent;
-            width: 100%;
-            text-align: left;
-            color: #1e293b;
-        }
+    .file-item:hover {
+      background: #f8fafc;
+    }
 
-        .file-item:hover {
-            background: #f8fafc;
-        }
+    .file-item.active {
+      background: #1e293b;
+      color: white;
+    }
 
-        .file-item.active {
-            background: #1e293b;
-            color: white;
-        }
+    .file-icon {
+      flex-shrink: 0;
+      width: 1rem;
+      height: 1rem;
+    }
 
-        .file-icon {
-            flex-shrink: 0;
-            width: 1rem;
-            height: 1rem;
-        }
+    .file-name {
+      font-size: 0.875rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-        .file-name {
-            font-size: 0.875rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+    .content-area {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      padding: 2.5rem;
+      min-height: 600px;
+    }
 
-        .content-area {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            padding: 2.5rem;
-            min-height: 600px;
-        }
+    .content-title {
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: #1e293b;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
 
-        .content-title {
-            font-size: 1.75rem;
-            font-weight: 300;
-            color: #1e293b;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
+    .content-body {
+      line-height: 1.7;
+      color: #475569;
+    }
 
-        .content-body {
-            line-height: 1.7;
-            color: #475569;
-        }
+    .error {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      margin-top: 1rem;
+    }
 
-        .empty-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 5rem 2rem;
-        }
+    .markdown-body {
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
 
-        .empty-icon {
-            font-size: 4rem;
-            color: #cbd5e1;
-            margin-bottom: 1rem;
-        }
-
-        .empty-title {
-            font-size: 1.25rem;
-            font-weight: 300;
-            color: #64748b;
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-subtitle {
-            color: #94a3b8;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #64748b;
-        }
-
-        .error {
-            background: #fef2f2;
-            color: #dc2626;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            margin-top: 1rem;
-        }
-
-        .markdown-body {
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-
-        .markdown-body h1, .markdown-body h2, .markdown-body h3 {
-            margin-top: 1.5rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-
-        .markdown-body p {
-            margin-bottom: 1rem;
-        }
-
-        .markdown-body code {
-            background: #f1f5f9;
-            padding: 0.2rem 0.4rem;
-            border-radius: 0.25rem;
-            font-size: 0.85em;
-        }
-
-        .markdown-body pre {
-            background: #f1f5f9;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            overflow-x: auto;
-            margin-bottom: 1rem;
-        }
-
-        .markdown-body pre code {
-            background: none;
-            padding: 0;
-        }
-
-        .step-indicator {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            color: #64748b;
-            font-size: 0.875rem;
-        }
-    </style>
+    .markdown-body pre {
+      background: #f1f5f9;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+  </style>
 </head>
 <body>
-    <div id="app"></div>
+  <div id="app"></div>
 
-    <script>
-        var app = {
-            step: 'username',
-            username: '',
-            repos: [],
-            selectedRepo: null,
-            selectedBranch: 'main',
-            files: [],
-            currentPath: 'content',
-            selectedFile: null,
-            content: '',
-            loading: false,
-            error: '',
-            searchTerm: ''
-        };
+  <script>
+    var app = {
+      step: 'username',
+      username: '',
+      repos: [],
+      selectedRepo: null,
+      selectedBranch: 'main',
+      files: [],
+      currentPath: '',
+      selectedFile: null,
+      content: '',
+      loading: false,
+      error: '',
+      searchTerm: ''
+    };
 
-        function fetchRepos() {
-            app.loading = true;
-            app.error = '';
-            app.repos = [];
-            render();
+    function fetchRepos() {
+      app.loading = true;
+      app.error = '';
+      app.repos = [];
+      render();
 
-            fetch('https://api.github.com/users/' + app.username + '/repos?per_page=100&sort=updated')
-                .then(function(response) {
-                    if (!response.ok) throw new Error('User not found or API limit reached');
-                    return response.json();
-                })
-                .then(function(data) {
-                    app.repos = data;
-                    app.loading = false;
-                    app.step = 'repo-select';
-                    render();
-                })
-                .catch(function(err) {
-                    app.error = err.message;
-                    app.loading = false;
-                    render();
-                });
+      fetch('https://api.github.com/users/' + app.username + '/repos?per_page=100&sort=updated')
+        .then(r => {
+          if (!r.ok) throw new Error('User not found or API limit reached');
+          return r.json();
+        })
+        .then(data => {
+          app.repos = data;
+          app.loading = false;
+          app.step = 'repo-select';
+          render();
+        })
+        .catch(err => {
+          app.error = err.message;
+          app.loading = false;
+          render();
+        });
+    }
+
+    function fetchFiles(path) {
+      app.loading = true;
+      app.error = '';
+      render();
+
+      const url = 'https://api.github.com/repos/' + app.username + '/' + app.selectedRepo.name + '/contents/' + path + '?ref=' + app.selectedBranch;
+      fetch(url)
+        .then(r => {
+          if (!r.ok) throw new Error('Failed to fetch files for this repository.');
+          return r.json();
+        })
+        .then(data => {
+          app.files = data;
+          app.loading = false;
+
+          const readme = data.find(f => f.name.toLowerCase().startsWith('readme'));
+          if (readme) fetchContent(readme);
+
+          render();
+        })
+        .catch(err => {
+          app.error = err.message;
+          app.files = [];
+          app.loading = false;
+          render();
+        });
+    }
+
+    function fetchContent(file) {
+      app.loading = true;
+      app.error = '';
+      render();
+
+      fetch(file.download_url)
+        .then(r => {
+          if (!r.ok) throw new Error('Failed to fetch content');
+          return r.text();
+        })
+        .then(text => {
+          app.content = text;
+          app.selectedFile = file;
+          app.loading = false;
+          render();
+        })
+        .catch(err => {
+          app.error = err.message;
+          app.loading = false;
+          render();
+        });
+    }
+
+    function handleFileClick(file) {
+      if (file.type === 'dir') {
+        app.currentPath = file.path;
+        app.selectedFile = null;
+        app.content = '';
+        fetchFiles(app.currentPath);
+      } else {
+        fetchContent(file);
+      }
+    }
+
+    function selectRepo(repo) {
+      app.selectedRepo = repo;
+      app.selectedBranch = repo.default_branch || 'main';
+      app.step = 'viewing';
+      app.currentPath = '';
+      fetchFiles(app.currentPath);
+    }
+
+    function handleFetchRepos() {
+      app.username = document.getElementById('username').value.trim();
+      if (app.username) fetchRepos();
+    }
+
+    function goBackToUsername() {
+      app.step = 'username';
+      app.repos = [];
+      app.selectedRepo = null;
+      render();
+    }
+
+    function changeRepo() {
+      app.step = 'repo-select';
+      app.selectedFile = null;
+      app.content = '';
+      app.currentPath = '';
+      render();
+    }
+
+    function handleSearch(e) {
+      app.searchTerm = e.target.value;
+      render();
+    }
+
+    function getFilteredFiles() {
+      return app.files.filter(f => f.name.toLowerCase().includes(app.searchTerm.toLowerCase()));
+    }
+
+    function render() {
+      const el = document.getElementById('app');
+      if (app.step === 'username') {
+        el.innerHTML = `
+          <div class="config-screen">
+            <div class="config-card">
+              <div class="config-icon">👤</div>
+              <h1 class="config-title">Enter GitHub Username</h1>
+              <div class="form-group">
+                <label>GitHub Username</label>
+                <input type="text" id="username" value="${app.username}" placeholder="octocat">
+              </div>
+              <button class="btn" onclick="handleFetchRepos()" ${app.loading ? 'disabled' : ''}>
+                ${app.loading ? 'Loading...' : 'Fetch Repositories'}
+              </button>
+              ${app.error ? `<div class="error">${app.error}</div>` : ''}
+            </div>
+          </div>
+        `;
+      } else if (app.step === 'repo-select') {
+        let reposHtml = app.repos.map(r => `
+          <div class="repo-item" onclick='selectRepo(${JSON.stringify(r)})'>
+            <div class="repo-name">${r.name}</div>
+            ${r.description ? `<div class="repo-desc">${r.description}</div>` : ''}
+            <div class="repo-branch">Default branch: ${r.default_branch || 'main'}</div>
+          </div>
+        `).join('');
+
+        el.innerHTML = `
+          <div class="config-screen">
+            <div class="config-card">
+              <div class="config-icon">📚</div>
+              <h1 class="config-title">Select Repository</h1>
+              <button class="btn btn-secondary" onclick="goBackToUsername()">← Change Username</button>
+              ${reposHtml ? `<div class="repo-list">${reposHtml}</div>` : '<div>No repositories found</div>'}
+            </div>
+          </div>
+        `;
+      } else {
+        const files = getFilteredFiles();
+        const dirs = files.filter(f => f.type === 'dir');
+        const docs = files.filter(f => f.type === 'file');
+        const fileListHtml = files.length ? `
+          <div class="file-list">
+            ${dirs.map(d => `<button class="file-item" onclick='handleFileClick(${JSON.stringify(d)})'><span class="file-icon">📁</span>${d.name}</button>`).join('')}
+            ${docs.map(f => `<button class="file-item ${app.selectedFile && app.selectedFile.path === f.path ? 'active' : ''}' onclick='handleFileClick(${JSON.stringify(f)})'><span class="file-icon">📄</span>${f.name}</button>`).join('')}
+          </div>
+        ` : '<p>No files found</p>';
+
+        const contentHtml = app.selectedFile ? `
+          <h2 class="content-title">${app.selectedFile.name}</h2>
+          <div class="markdown-body" id="markdown-content"></div>
+        ` : '<p>Select a file to view its contents</p>';
+
+        el.innerHTML = `
+          <div class="container">
+            <div class="header">
+              <div class="header-top">
+                <div class="header-info">
+                  <div class="header-icon">📁</div>
+                  <div>
+                    <div class="header-title">${app.username}/${app.selectedRepo.name}</div>
+                    <div class="header-subtitle">Branch: ${app.selectedBranch}</div>
+                  </div>
+                </div>
+                <button class="btn btn-secondary" onclick="changeRepo()">Change Repository</button>
+              </div>
+              <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Search files..." value="${app.searchTerm}" oninput="handleSearch(event)">
+              </div>
+            </div>
+            <div class="main-content">
+              <div class="sidebar">
+                <h2 class="sidebar-title">Contents</h2>
+                ${app.loading ? '<div>Loading...</div>' : ''}
+                ${app.error ? `<div class="error">${app.error}</div>` : ''}
+                ${fileListHtml}
+              </div>
+              <div class="content-area">${contentHtml}</div>
+            </div>
+          </div>
+        `;
+
+        if (app.selectedFile && app.content) {
+          const markdownEl = document.getElementById('markdown-content');
+          if (markdownEl) markdownEl.innerHTML = marked.parse(app.content);
         }
+      }
+    }
 
-        function fetchFiles(path) {
-            app.loading = true;
-            app.error = '';
-            render();
-
-            fetch('https://api.github.com/repos/' + app.username + '/' + app.selectedRepo.name + '/contents/' + path + '?ref=' + app.selectedBranch)
-                .then(function(response) {
-                    if (!response.ok) throw new Error('Failed to fetch files. The "content" folder may not exist.');
-                    return response.json();
-                })
-                .then(function(data) {
-                    app.files = data;
-                    app.loading = false;
-                    render();
-                })
-                .catch(function(err) {
-                    app.error = err.message;
-                    app.files = [];
-                    app.loading = false;
-                    render();
-                });
-        }
-
-        function fetchContent(file) {
-            app.loading = true;
-            app.error = '';
-            render();
-
-            fetch(file.download_url)
-                .then(function(response) {
-                    if (!response.ok) throw new Error('Failed to fetch content');
-                    return response.text();
-                })
-                .then(function(text) {
-                    app.content = text;
-                    app.selectedFile = file;
-                    app.loading = false;
-                    render();
-                })
-                .catch(function(err) {
-                    app.error = err.message;
-                    app.loading = false;
-                    render();
-                });
-        }
-
-        function handleFileClick(file) {
-            if (file.type === 'dir') {
-                app.currentPath = file.path;
-                app.selectedFile = null;
-                app.content = '';
-                fetchFiles(app.currentPath);
-            } else if (file.name.toLowerCase().indexOf('readme') !== -1) {
-                fetchContent(file);
-            }
-        }
-
-        function goToParent() {
-            var pathParts = app.currentPath.split('/');
-            if (pathParts.length > 1) {
-                pathParts.pop();
-                app.currentPath = pathParts.join('/');
-                app.selectedFile = null;
-                app.content = '';
-                fetchFiles(app.currentPath);
-            }
-        }
-
-        function getFilteredFiles() {
-            return app.files.filter(function(file) {
-                return file.name.toLowerCase().indexOf(app.searchTerm.toLowerCase()) !== -1;
-            });
-        }
-
-        function selectRepo(repo) {
-            app.selectedRepo = repo;
-            app.selectedBranch = repo.default_branch || 'main';
-            app.step = 'viewing';
-            app.currentPath = 'content';
-            fetchFiles(app.currentPath);
-        }
-
-        function renderUsernameStep() {
-            return '<div class="config-screen">' +
-                '<div class="config-card">' +
-                '<div class="config-icon">👤</div>' +
-                '<h1 class="config-title">Enter GitHub Username</h1>' +
-                '<div class="step-indicator">Step 1 of 2</div>' +
-                '<div class="form-group">' +
-                '<label>GitHub Username</label>' +
-                '<input type="text" id="username" value="' + app.username + '" placeholder="octocat">' +
-                '</div>' +
-                '<button class="btn" onclick="handleFetchRepos()" ' + (app.loading ? 'disabled' : '') + '>' +
-                (app.loading ? 'Loading...' : 'Fetch Repositories') +
-                '</button>' +
-                (app.error ? '<div class="error">' + app.error + '</div>' : '') +
-                '</div>' +
-                '</div>';
-        }
-
-        function renderRepoSelectStep() {
-            var reposHtml = '';
-            for (var i = 0; i < app.repos.length; i++) {
-                var repo = app.repos[i];
-                reposHtml += '<div class="repo-item" onclick=\'selectRepo(' + JSON.stringify(repo) + ')\'>' +
-                    '<div class="repo-name">' + repo.name + '</div>' +
-                    (repo.description ? '<div class="repo-desc">' + repo.description + '</div>' : '') +
-                    '<div class="repo-branch">Default branch: ' + (repo.default_branch || 'main') + '</div>' +
-                    '</div>';
-            }
-
-            return '<div class="config-screen">' +
-                '<div class="config-card">' +
-                '<div class="config-icon">📚</div>' +
-                '<h1 class="config-title">Select Repository</h1>' +
-                '<div class="step-indicator">Step 2 of 2 - @' + app.username + '</div>' +
-                '<button class="btn btn-secondary" onclick="goBackToUsername()" style="margin-bottom: 1rem;">← Change Username</button>' +
-                (app.repos.length > 0 ? 
-                    '<div class="repo-list">' + reposHtml + '</div>' :
-                    '<div class="loading">No repositories found</div>'
-                ) +
-                '</div>' +
-                '</div>';
-        }
-
-        function renderMainApp() {
-            var filteredFiles = getFilteredFiles();
-            var readmeFiles = filteredFiles.filter(function(f) { return f.name.toLowerCase().indexOf('readme') !== -1; });
-            var directories = filteredFiles.filter(function(f) { return f.type === 'dir'; });
-            var pathParts = app.currentPath.split('/');
-
-            var breadcrumbHtml = '<span>🏠</span>';
-            for (var i = 0; i < pathParts.length; i++) {
-                var isLast = i === pathParts.length - 1;
-                breadcrumbHtml += '<span>›</span><span class="' + (isLast ? 'breadcrumb-active' : '') + '">' + pathParts[i] + '</span>';
-            }
-
-            var directoriesHtml = '';
-            for (var i = 0; i < directories.length; i++) {
-                var dir = directories[i];
-                directoriesHtml += '<button class="file-item" onclick=\'handleFileClick(' + JSON.stringify(dir) + ')\'>' +
-                    '<span class="file-icon">📁</span>' +
-                    '<span class="file-name">' + dir.name + '</span>' +
-                    '</button>';
-            }
-
-            var readmeFilesHtml = '';
-            for (var i = 0; i < readmeFiles.length; i++) {
-                var file = readmeFiles[i];
-                var isActive = app.selectedFile && app.selectedFile.path === file.path;
-                readmeFilesHtml += '<button class="file-item ' + (isActive ? 'active' : '') + '" onclick=\'handleFileClick(' + JSON.stringify(file) + ')\'>' +
-                    '<span class="file-icon">📄</span>' +
-                    '<span class="file-name">' + file.name + '</span>' +
-                    '</button>';
-            }
-
-            var fileListHtml = '';
-            if (!app.loading && !app.error) {
-                fileListHtml = '<div class="file-list">';
-                if (app.currentPath !== 'content') {
-                    fileListHtml += '<button class="file-item" onclick="goToParent()">' +
-                        '<span class="file-icon">◀</span>' +
-                        '<span class="file-name">Back</span>' +
-                        '</button>';
-                }
-                fileListHtml += directoriesHtml + readmeFilesHtml;
-                if (readmeFiles.length === 0 && directories.length === 0) {
-                    fileListHtml += '<p style="text-align: center; padding: 1rem; color: #94a3b8; font-size: 0.875rem;">No README files found</p>';
-                }
-                fileListHtml += '</div>';
-            }
-
-            var contentHtml = '';
-            if (app.selectedFile) {
-                contentHtml = '<h2 class="content-title">' + app.selectedFile.name + '</h2>' +
-                    '<div class="content-body markdown-body" id="markdown-content"></div>';
-            } else {
-                contentHtml = '<div class="empty-state">' +
-                    '<div class="empty-icon">📄</div>' +
-                    '<h3 class="empty-title">Select a README file</h3>' +
-                    '<p class="empty-subtitle">Choose a file from the sidebar to view its contents</p>' +
-                    '</div>';
-            }
-
-            return '<div class="container">' +
-                '<div class="header">' +
-                '<div class="header-top">' +
-                '<div class="header-info">' +
-                '<div class="header-icon">📁</div>' +
-                '<div>' +
-                '<div class="header-title">' + app.username + '/' + app.selectedRepo.name + '</div>' +
-                '<div class="header-subtitle">Branch: ' + app.selectedBranch + '</div>' +
-                '</div>' +
-                '</div>' +
-                '<button class="btn btn-secondary" onclick="changeRepo()">Change Repository</button>' +
-                '</div>' +
-                '<div class="breadcrumb">' + breadcrumbHtml + '</div>' +
-                '<div class="search-box">' +
-                '<span class="search-icon">🔍</span>' +
-                '<input type="text" class="search-input" placeholder="Search files..." value="' + app.searchTerm + '" oninput="handleSearch(event)">' +
-                '</div>' +
-                '</div>' +
-                '<div class="main-content">' +
-                '<div class="sidebar">' +
-                '<h2 class="sidebar-title">Contents</h2>' +
-                (app.loading ? '<div class="loading">Loading...</div>' : '') +
-                (app.error ? '<div class="error">' + app.error + '</div>' : '') +
-                fileListHtml +
-                '</div>' +
-                '<div class="content-area">' + contentHtml + '</div>' +
-                '</div>' +
-                '</div>';
-        }
-
-        function render() {
-            var appEl = document.getElementById('app');
-            
-            if (app.step === 'username') {
-                appEl.innerHTML = renderUsernameStep();
-            } else if (app.step === 'repo-select') {
-                appEl.innerHTML = renderRepoSelectStep();
-            } else {
-                appEl.innerHTML = renderMainApp();
-            }
-            
-            if (app.selectedFile && app.content) {
-                var markdownEl = document.getElementById('markdown-content');
-                if (markdownEl) {
-                    markdownEl.innerHTML = marked.parse(app.content);
-                }
-            }
-        }
-
-        function handleFetchRepos() {
-            app.username = document.getElementById('username').value.trim();
-            if (app.username) {
-                fetchRepos();
-            }
-        }
-
-        function goBackToUsername() {
-            app.step = 'username';
-            app.repos = [];
-            app.selectedRepo = null;
-            render();
-        }
-
-        function changeRepo() {
-            app.step = 'repo-select';
-            app.selectedFile = null;
-            app.content = '';
-            app.currentPath = 'content';
-            render();
-        }
-
-        function handleSearch(event) {
-            app.searchTerm = event.target.value;
-            render();
-        }
-
-        render();
-    </script>
+    render();
+  </script>
 </body>
 </html>
