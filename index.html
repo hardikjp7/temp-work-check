@@ -3,350 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GitHub README Viewer</title>
+  <title>GitHub File Viewer</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * {margin:0;padding:0;box-sizing:border-box;}
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-      min-height: 100vh;
+      background: linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%);
       color: #334155;
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-
-    .config-screen {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       min-height: 100vh;
-      padding: 2rem;
     }
-
+    .container {max-width:1400px;margin:0 auto;padding:2rem;}
+    .config-screen {display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
     .config-card {
-      background: white;
-      border-radius: 1rem;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-      padding: 2.5rem;
-      max-width: 500px;
-      width: 100%;
+      background:white;border-radius:1rem;box-shadow:0 10px 40px rgba(0,0,0,0.1);
+      padding:2.5rem;max-width:500px;width:100%;
     }
-
-    .config-icon {
-      text-align: center;
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
+    .config-icon{text-align:center;font-size:3rem;margin-bottom:1.5rem;}
+    .config-title{text-align:center;font-size:1.75rem;font-weight:300;color:#1e293b;margin-bottom:2rem;}
+    label{display:block;font-size:0.875rem;font-weight:500;color:#475569;margin-bottom:0.5rem;}
+    input[type="text"]{
+      width:100%;padding:0.75rem 1rem;border:1px solid #e2e8f0;border-radius:0.5rem;
+      font-size:0.875rem;transition:all 0.2s;
     }
-
-    .config-title {
-      text-align: center;
-      font-size: 1.75rem;
-      font-weight: 300;
-      color: #1e293b;
-      margin-bottom: 2rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.5rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 500;
-      color: #475569;
-      margin-bottom: 0.5rem;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      transition: all 0.2s;
-    }
-
-    input[type="text"]:focus {
-      outline: none;
-      border-color: #64748b;
-      box-shadow: 0 0 0 3px rgba(100, 116, 139, 0.1);
-    }
-
+    input[type="text"]:focus{outline:none;border-color:#64748b;box-shadow:0 0 0 3px rgba(100,116,139,0.1);}
     .btn {
-      width: 100%;
-      padding: 0.875rem;
-      background: #1e293b;
-      color: white;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
+      width:100%;padding:0.875rem;background:#1e293b;color:white;border:none;
+      border-radius:0.5rem;font-size:1rem;font-weight:500;cursor:pointer;transition:background 0.2s;
     }
-
-    .btn:hover {
-      background: #334155;
-    }
-
-    .btn:disabled {
-      background: #94a3b8;
-      cursor: not-allowed;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: #475569;
-      padding: 0.5rem 1rem;
-      width: auto;
-      font-size: 0.875rem;
-    }
-
-    .btn-secondary:hover {
-      color: #1e293b;
-      background: #f1f5f9;
-    }
-
-    .repo-list {
-      margin-top: 1.5rem;
-      max-height: 400px;
-      overflow-y: auto;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.5rem;
-    }
-
-    .repo-item {
-      padding: 1rem;
-      border-bottom: 1px solid #e2e8f0;
-      cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .repo-item:last-child {
-      border-bottom: none;
-    }
-
-    .repo-item:hover {
-      background: #f8fafc;
-    }
-
-    .repo-name {
-      font-weight: 500;
-      color: #1e293b;
-    }
-
-    .repo-desc {
-      font-size: 0.875rem;
-      color: #64748b;
-    }
-
-    .repo-branch {
-      font-size: 0.75rem;
-      color: #94a3b8;
-    }
-
+    .btn:hover{background:#334155;}
+    .btn-secondary{background:transparent;color:#475569;padding:0.5rem 1rem;width:auto;font-size:0.875rem;}
+    .btn-secondary:hover{color:#1e293b;background:#f1f5f9;}
+    .repo-list{margin-top:1.5rem;max-height:400px;overflow-y:auto;border:1px solid #e2e8f0;border-radius:0.5rem;}
+    .repo-item{padding:1rem;border-bottom:1px solid #e2e8f0;cursor:pointer;transition:background 0.2s;}
+    .repo-item:hover{background:#f8fafc;}
     .header {
-      background: white;
-      border-radius: 1rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
+      background:white;border-radius:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.05);
+      padding:1.5rem;margin-bottom:1.5rem;
     }
-
-    .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-
-    .header-info {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .header-icon {
-      font-size: 2rem;
-    }
-
-    .header-title {
-      font-size: 1.5rem;
-      font-weight: 300;
-      color: #1e293b;
-    }
-
-    .header-subtitle {
-      font-size: 0.875rem;
-      color: #64748b;
-    }
-
-    .breadcrumb {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      color: #64748b;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .breadcrumb-active {
-      color: #1e293b;
-      font-weight: 500;
-    }
-
-    .search-box {
-      position: relative;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #94a3b8;
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 0.75rem 1rem 0.75rem 2.5rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-    }
-
-    .main-content {
-      display: grid;
-      grid-template-columns: 350px 1fr;
-      gap: 1.5rem;
-    }
-
-    @media (max-width: 1024px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-    }
-
+    .main-content {display:grid;grid-template-columns:350px 1fr;gap:1.5rem;}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr;}}
     .sidebar {
-      background: white;
-      border-radius: 1rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      padding: 1.5rem;
+      background:white;border-radius:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.05);padding:1.5rem;
     }
-
-    .sidebar-title {
-      font-size: 1.125rem;
-      font-weight: 500;
-      color: #1e293b;
-      margin-bottom: 1rem;
-    }
-
-    .file-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
+    .file-list {display:flex;flex-direction:column;gap:0.5rem;}
     .file-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.2s;
-      border: none;
-      background: transparent;
-      width: 100%;
-      text-align: left;
-      color: #1e293b;
+      display:flex;align-items:center;gap:0.75rem;padding:0.75rem;border-radius:0.5rem;
+      cursor:pointer;transition:background 0.2s;border:none;background:transparent;width:100%;
     }
-
-    .file-item:hover {
-      background: #f8fafc;
-    }
-
-    .file-item.active {
-      background: #1e293b;
-      color: white;
-    }
-
-    .file-icon {
-      flex-shrink: 0;
-      width: 1rem;
-      height: 1rem;
-    }
-
-    .file-name {
-      font-size: 0.875rem;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
+    .file-item:hover{background:#f8fafc;}
+    .file-item.active{background:#1e293b;color:white;}
     .content-area {
-      background: white;
-      border-radius: 1rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      padding: 2.5rem;
-      min-height: 600px;
+      background:white;border-radius:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.05);
+      padding:2.5rem;min-height:600px;overflow-x:auto;
     }
-
-    .content-title {
-      font-size: 1.75rem;
-      font-weight: 300;
-      color: #1e293b;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .content-body {
-      line-height: 1.7;
-      color: #475569;
-    }
-
+    .content-title {font-size:1.75rem;font-weight:300;color:#1e293b;margin-bottom:1.5rem;}
     .error {
-      background: #fef2f2;
-      color: #dc2626;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      margin-top: 1rem;
+      background:#fef2f2;color:#dc2626;padding:1rem;border-radius:0.5rem;font-size:0.875rem;margin-top:1rem;
     }
-
-    .markdown-body {
-      font-size: 0.95rem;
-      line-height: 1.7;
-    }
-
+    .markdown-body {font-size:0.95rem;line-height:1.7;}
     .markdown-body pre {
-      background: #f1f5f9;
-      padding: 1rem;
-      border-radius: 0.5rem;
-      overflow-x: auto;
-      margin-bottom: 1rem;
+      background:#f1f5f9;padding:1rem;border-radius:0.5rem;overflow-x:auto;margin-bottom:1rem;
     }
   </style>
 </head>
 <body>
   <div id="app"></div>
-
   <script>
     var app = {
       step: 'username',
@@ -366,18 +88,16 @@
     function fetchRepos() {
       app.loading = true;
       app.error = '';
-      app.repos = [];
       render();
-
-      fetch('https://api.github.com/users/' + app.username + '/repos?per_page=100&sort=updated')
+      fetch(`https://api.github.com/users/${app.username}/repos?per_page=100&sort=updated`)
         .then(r => {
           if (!r.ok) throw new Error('User not found or API limit reached');
           return r.json();
         })
         .then(data => {
           app.repos = data;
-          app.loading = false;
           app.step = 'repo-select';
+          app.loading = false;
           render();
         })
         .catch(err => {
@@ -391,8 +111,7 @@
       app.loading = true;
       app.error = '';
       render();
-
-      const url = 'https://api.github.com/repos/' + app.username + '/' + app.selectedRepo.name + '/contents/' + path + '?ref=' + app.selectedBranch;
+      const url = `https://api.github.com/repos/${app.username}/${app.selectedRepo.name}/contents/${path}?ref=${app.selectedBranch}`;
       fetch(url)
         .then(r => {
           if (!r.ok) throw new Error('Failed to fetch files for this repository.');
@@ -401,10 +120,6 @@
         .then(data => {
           app.files = data;
           app.loading = false;
-
-          const readme = data.find(f => f.name.toLowerCase().startsWith('readme'));
-          if (readme) fetchContent(readme);
-
           render();
         })
         .catch(err => {
@@ -422,7 +137,7 @@
 
       fetch(file.download_url)
         .then(r => {
-          if (!r.ok) throw new Error('Failed to fetch content');
+          if (!r.ok) throw new Error('Failed to fetch file content');
           return r.text();
         })
         .then(text => {
@@ -441,8 +156,6 @@
     function handleFileClick(file) {
       if (file.type === 'dir') {
         app.currentPath = file.path;
-        app.selectedFile = null;
-        app.content = '';
         fetchFiles(app.currentPath);
       } else {
         fetchContent(file);
@@ -454,7 +167,7 @@
       app.selectedBranch = repo.default_branch || 'main';
       app.step = 'viewing';
       app.currentPath = '';
-      fetchFiles(app.currentPath);
+      fetchFiles('');
     }
 
     function handleFetchRepos() {
@@ -494,10 +207,8 @@
             <div class="config-card">
               <div class="config-icon">👤</div>
               <h1 class="config-title">Enter GitHub Username</h1>
-              <div class="form-group">
-                <label>GitHub Username</label>
-                <input type="text" id="username" value="${app.username}" placeholder="octocat">
-              </div>
+              <label>GitHub Username</label>
+              <input type="text" id="username" value="${app.username}" placeholder="octocat">
               <button class="btn" onclick="handleFetchRepos()" ${app.loading ? 'disabled' : ''}>
                 ${app.loading ? 'Loading...' : 'Fetch Repositories'}
               </button>
@@ -506,21 +217,20 @@
           </div>
         `;
       } else if (app.step === 'repo-select') {
-        let reposHtml = app.repos.map(r => `
+        const reposHtml = app.repos.map(r => `
           <div class="repo-item" onclick='selectRepo(${JSON.stringify(r)})'>
             <div class="repo-name">${r.name}</div>
             ${r.description ? `<div class="repo-desc">${r.description}</div>` : ''}
-            <div class="repo-branch">Default branch: ${r.default_branch || 'main'}</div>
+            <div class="repo-branch">Branch: ${r.default_branch || 'main'}</div>
           </div>
         `).join('');
-
         el.innerHTML = `
           <div class="config-screen">
             <div class="config-card">
               <div class="config-icon">📚</div>
               <h1 class="config-title">Select Repository</h1>
               <button class="btn btn-secondary" onclick="goBackToUsername()">← Change Username</button>
-              ${reposHtml ? `<div class="repo-list">${reposHtml}</div>` : '<div>No repositories found</div>'}
+              <div class="repo-list">${reposHtml || '<p>No repositories found</p>'}</div>
             </div>
           </div>
         `;
@@ -528,40 +238,36 @@
         const files = getFilteredFiles();
         const dirs = files.filter(f => f.type === 'dir');
         const docs = files.filter(f => f.type === 'file');
-        const fileListHtml = files.length ? `
+        const fileListHtml = `
           <div class="file-list">
-            ${dirs.map(d => `<button class="file-item" onclick='handleFileClick(${JSON.stringify(d)})'><span class="file-icon">📁</span>${d.name}</button>`).join('')}
-            ${docs.map(f => `<button class="file-item ${app.selectedFile && app.selectedFile.path === f.path ? 'active' : ''}' onclick='handleFileClick(${JSON.stringify(f)})'><span class="file-icon">📄</span>${f.name}</button>`).join('')}
+            ${dirs.map(d => `<button class="file-item" onclick='handleFileClick(${JSON.stringify(d)})'>📁 ${d.name}</button>`).join('')}
+            ${docs.map(f => `
+              <button class="file-item ${app.selectedFile && app.selectedFile.path === f.path ? 'active' : ''}" onclick='handleFileClick(${JSON.stringify(f)})'>
+                📄 ${f.name}
+              </button>
+            `).join('')}
           </div>
-        ` : '<p>No files found</p>';
-
+        `;
         const contentHtml = app.selectedFile ? `
           <h2 class="content-title">${app.selectedFile.name}</h2>
-          <div class="markdown-body" id="markdown-content"></div>
-        ` : '<p>Select a file to view its contents</p>';
+          <div id="markdown-content" class="markdown-body"></div>
+        ` : '<p>Select a file to view its content</p>';
 
         el.innerHTML = `
           <div class="container">
             <div class="header">
-              <div class="header-top">
-                <div class="header-info">
-                  <div class="header-icon">📁</div>
-                  <div>
-                    <div class="header-title">${app.username}/${app.selectedRepo.name}</div>
-                    <div class="header-subtitle">Branch: ${app.selectedBranch}</div>
-                  </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <h2>${app.username}/${app.selectedRepo.name}</h2>
+                  <p>Branch: ${app.selectedBranch}</p>
                 </div>
-                <button class="btn btn-secondary" onclick="changeRepo()">Change Repository</button>
-              </div>
-              <div class="search-box">
-                <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" placeholder="Search files..." value="${app.searchTerm}" oninput="handleSearch(event)">
+                <button class="btn btn-secondary" onclick="changeRepo()">Change Repo</button>
               </div>
             </div>
             <div class="main-content">
               <div class="sidebar">
-                <h2 class="sidebar-title">Contents</h2>
-                ${app.loading ? '<div>Loading...</div>' : ''}
+                <h2>Files</h2>
+                <input type="text" class="search-input" placeholder="Search files..." value="${app.searchTerm}" oninput="handleSearch(event)">
                 ${app.error ? `<div class="error">${app.error}</div>` : ''}
                 ${fileListHtml}
               </div>
@@ -571,8 +277,11 @@
         `;
 
         if (app.selectedFile && app.content) {
+          const isMarkdown = /\.(md|markdown|mdx)$/i.test(app.selectedFile.name);
           const markdownEl = document.getElementById('markdown-content');
-          if (markdownEl) markdownEl.innerHTML = marked.parse(app.content);
+          if (markdownEl) {
+            markdownEl.innerHTML = isMarkdown ? marked.parse(app.content) : `<pre>${app.content}</pre>`;
+          }
         }
       }
     }
